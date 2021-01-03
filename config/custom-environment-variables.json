@@ -1,0 +1,7 @@
+{
+    "jwtprivateKey": "social_jwtprivateKey",
+    "cloud_name": "myCloudName",
+    "api_key": "myApiKey",
+    "api_secret": "myApiSecret",
+    "SENDGRID_API_KEY":"sendGridApi"
+}
