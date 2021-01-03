@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).select("-password -__v");
   if (!user) return res.status(404).send("No User found with the given ID");
 
   res.status(200).send(user);

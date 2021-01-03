@@ -1,4 +1,5 @@
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const config = require("config");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -44,6 +45,7 @@ function rigesterValidation(user) {
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+    posts: Joi.objectId(),
     profileImage: Joi.string(),
   });
   return schema.validate(user);
