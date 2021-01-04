@@ -14,6 +14,10 @@ router.get("/", async (req, res, next) => {
   res.status(200).send(user);
 });
 
+router.get("/me", auth, async (req, res, next) => {
+  const user = await User.findById(req.user._id).select("-password");
+  res.status(200).send(user);
+});
 router.get("/:id", async (req, res, next) => {
   const user = await User.findById(req.params.id).select("-password -__v");
   if (!user) return res.status(404).send("No User found with the given ID");
@@ -35,7 +39,7 @@ router.post("/register", multer, async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, 10),
-    profileImage: img.profileImage,
+    image: img.image,
   });
 
   try {

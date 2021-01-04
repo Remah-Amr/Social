@@ -12,7 +12,7 @@ exports.cloudUpload = (file) => {
     cloudinary.uploader.upload(
       file,
       (result) => {
-        resolve({ profileImage: result.url });
+        resolve({ image: result.url });
       },
       { resource_type: "auto" }
     );

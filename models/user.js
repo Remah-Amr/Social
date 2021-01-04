@@ -1,8 +1,8 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const config = require("config");
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+// const bcrypt = require("bcrypt");
+// const crypto = require("crypto");
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
@@ -20,22 +20,29 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    profileImage: {
+    image: {
       type: String,
     },
     posts: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "post",
-      required: true,
     },
-    resetPasswordToken: {
-      type: String,
-      required: false,
+    followers: {
+      type: Number,
+      default: 0,
     },
-    resetPasswordExpires: {
-      type: Date,
-      required: false,
+    following: {
+      type: Number,
+      default: 0,
     },
+    // resetPasswordToken: {
+    //   type: String,
+    //   required: false,
+    // },
+    // resetPasswordExpires: {
+    //   type: Date,
+    //   required: false,
+    // },
   },
   { timestamps: true }
 );
@@ -46,7 +53,7 @@ function rigesterValidation(user) {
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     posts: Joi.objectId(),
-    profileImage: Joi.string(),
+    image: Joi.string(),
   });
   return schema.validate(user);
 }
