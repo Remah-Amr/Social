@@ -108,12 +108,16 @@ router.post("/login", async (req, res, next) => {
 //   }
 // });
 
-router.put("/:id", auth, async (req, res, next) => {
+router.put("/:id", auth, multer, async (req, res, next) => {
   let user = await User.findById(req.params.id);
+
+  const img = await cloud.cloudUpload(req.file.path);
+  if (!img) return res.status(500).send("Error while uploading");
 
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = await bcrypt.hash(req.body.password, 10);
+  user.image = img.image;
   user = await user.save();
   res.send(user);
 });
