@@ -23,14 +23,18 @@ const userSchema = mongoose.Schema(
     image: {
       type: String,
     },
-    posts: {
+    // [TODO] remove this attribute , we already store user attribute in post model
+    posts: { 
       type: mongoose.Schema.Types.ObjectId,
       ref: "post",
     },
+    // [TODO] : Array of values => [ { type: mongoose.Schema.Types.ObjectId , ref: "User" } ]
+    // [TODO] : rename to likeIds , we get numberOfFollowers from the length of that array
     followers: {
       type: Number,
       default: 0,
     },
+    // [TODO] : Same As followers
     following: {
       type: Number,
       default: 0,
@@ -52,7 +56,7 @@ function rigesterValidation(user) {
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    posts: Joi.objectId(),
+    posts: Joi.objectId(), // [TODO] : remove 
     image: Joi.string(),
   });
   return schema.validate(user);

@@ -84,7 +84,7 @@ router.post("/login", async (req, res, next) => {
 //   if (!user)
 //     return res
 //       .status(401)
-//       .send("Password reset token is invalid or has expired.");
+//       .send("Password reset token is invalid or has expired.");zwt
 
 //   try {
 //     user.password = req.body.password;
@@ -111,6 +111,9 @@ router.post("/login", async (req, res, next) => {
 router.put("/:id", auth, multer, async (req, res, next) => {
   let user = await User.findById(req.params.id);
 
+  // [TODO] : Add validation layer only author of profile can update it
+  // if(req.user._id !==  req.params.id) return 403
+
   const img = await cloud.cloudUpload(req.file.path);
   if (!img) return res.status(500).send("Error while uploading");
 
@@ -123,9 +126,16 @@ router.put("/:id", auth, multer, async (req, res, next) => {
 });
 
 router.delete("/:id", auth, async (req, res, next) => {
+
   const user = await User.findByIdAndRemove(req.params.id);
   if (!user) return res.status(404).send("User with given ID not found");
 
   res.send(user);
 });
+
+// [TODO] : End point for change password 
+// [TODO] : End point for reset password 
+
+
+
 module.exports = router;

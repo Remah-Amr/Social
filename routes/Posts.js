@@ -23,7 +23,7 @@ router.post("/", auth, multer, async (req, res, next) => {
   const post = new Post({
     postText: req.body.postText,
     image: img.image,
-    user: req.body.userId,
+    user: req.body.userId, // [TODO] user: req.user._id
   });
 
   try {
@@ -38,6 +38,9 @@ router.post("/", auth, multer, async (req, res, next) => {
 router.put("/:id", auth, multer, async (req, res, next) => {
   let post = await Post.findById(req.params.id);
   if (!post) return res.status(404).send("Post not found");
+
+  // [TODO] add validation layer which only the author who can update his post 
+  // if(post.user !== req.user_.id) return 403
 
   const img = await cloud.cloudUpload(req.file.path);
   if (!img) return res.status(500).send("Error while uploading");
@@ -63,10 +66,20 @@ router.get("/:id", async (req, res, next) => {
   res.status(200).send(post);
 });
 router.delete("/:id", auth, async (req, res, next) => {
+  // [TODO] find only post first without remove step , check if authorize to remove , then remove
+  // const post = await Post.findById(req.params.id);
+  // if (!post) return res.send("Post is already not exist"); 
+  // if(post.user !== req.user._id) return 403
+  // await post.delete()
   const post = await Post.findByIdAndRemove(req.params.id);
   if (!post) return res.send("Post is already not exist");
 
   res.status(204).send(post);
 });
+
+
+// [TODO] : 3 end points for add comment on post , update , delete  
+// [TODO] : end point for add like on post 
+// [TODO] : end point user to user follow
 
 module.exports = router;
